@@ -1,0 +1,52 @@
+spring:
+    application:
+        name: order-service
+    jackson:
+        # Global setting to not return null objects in JSON responses
+        default-property-inclusion: NON_NULL
+    sleuth:
+        sampler:
+            probability: 1.0
+        propagation:
+            type: W3C
+    # zipkin:
+    #     base-url: <Jaeger.Zipkin.URL>
+    #     enabled: false
+    kafka:
+        bootstrap-servers: localhost:9092
+        producer:
+            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+            properties:
+                spring.json.add.type.headers: false
+
+server:
+    port: 8080
+
+management:
+    server:
+        port: 8580
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    endpoint:
+        health:
+            show-details: always
+            probes:
+                enabled: true
+
+springdoc:
+    use-management-port: true
+
+application:
+    cors:
+        origins: http://localhost:8580
+    product-service:
+        url: http://localhost:8081/products
+    kafka:
+        topic: order-queue
+
+logging:
+    level:
+        org.springframework: ERROR
+        org.apache.kafka: ERROR

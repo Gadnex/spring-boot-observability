@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.binarypaper</groupId>
+		<artifactId>spring-boot-observability</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<groupId>net.binarypaper</groupId>
+	<artifactId>notification-service</artifactId>
+	<version>0.0.1</version>
+	<name>notification-service</name>
+	<description>
+		Notification Service for processing orders from a Kafka queue and sending an email notification to the client.
+		For the demo the service will not really send the email, but will simply log the order from the queue.
+	</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
+	</dependencies>
+</project>
