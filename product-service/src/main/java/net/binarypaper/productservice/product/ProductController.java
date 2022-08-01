@@ -47,13 +47,13 @@ import net.logstash.logback.argument.StructuredArguments;
 @Slf4j
 public class ProductController {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    private Properties errorMessageProperties;
+    private final Properties errorMessageProperties;
 
-    private DataIntegrityViolationExceptionHandler dataIntegrityViolationExceptionHandler;
+    private final DataIntegrityViolationExceptionHandler dataIntegrityViolationExceptionHandler;
 
-    private Tracer tracer;
+    private final Tracer tracer;
 
     public ProductController(ProductRepository productRepository, Tracer tracer) {
         this.productRepository = productRepository;

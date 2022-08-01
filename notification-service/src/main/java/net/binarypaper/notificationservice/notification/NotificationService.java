@@ -7,19 +7,17 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.binarypaper.notificationservice.order.Order;
 import net.logstash.logback.argument.StructuredArguments;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class NotificationService {
 
-    private SleepService sleepService;
-
-    public NotificationService(SleepService sleepService) {
-        this.sleepService = sleepService;
-    }
+    private final SleepService sleepService;
 
     @KafkaListener(topics = { "${application.kafka.topic}" })
     @NewSpan
