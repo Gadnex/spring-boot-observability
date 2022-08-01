@@ -2,8 +2,6 @@ package net.binarypaper.orderservice.order;
 
 import java.util.HashMap;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
