@@ -13,7 +13,7 @@ public class Application {
 	}
 
 	@Bean
-	public WebClient getProductService() {
+	public WebClient getWebClient() {
 		return WebClient.create();
 	}
 
