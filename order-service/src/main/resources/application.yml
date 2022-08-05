@@ -9,9 +9,9 @@ spring:
             probability: 1.0
         propagation:
             type: W3C
-    zipkin:
-    #     base-url: <Jaeger.Zipkin.URL>
-        enabled: false
+    # zipkin:
+    # #     base-url: <Jaeger.Zipkin.URL>
+    #     enabled: false
     kafka:
         bootstrap-servers: localhost:9092
         producer:
