@@ -95,7 +95,6 @@ public class ProductController {
     }
 
     @PostMapping
-
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional
     @JsonView(Product.Views.View.class)
@@ -116,7 +115,7 @@ public class ProductController {
         try {
             productRepository.save(product);
         } catch (DataIntegrityViolationException ex) {
-            dataIntegrityViolationExceptionHandler.handleException(ex);
+            throw dataIntegrityViolationExceptionHandler.handleException(ex);
         }
         return product;
     }

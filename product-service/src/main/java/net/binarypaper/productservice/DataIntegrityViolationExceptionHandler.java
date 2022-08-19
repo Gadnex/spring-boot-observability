@@ -12,7 +12,7 @@ public class DataIntegrityViolationExceptionHandler {
 
     private final HashMap<String, String> constraintsToValidate = new HashMap<>();
 
-    private Properties errorMessageProperties;
+    private final Properties errorMessageProperties;
 
     public DataIntegrityViolationExceptionHandler(Properties errorMessageProperties) {
         this.errorMessageProperties = errorMessageProperties;
@@ -29,17 +29,17 @@ public class DataIntegrityViolationExceptionHandler {
     public ResponseStatusException handleException(DataIntegrityViolationException ex) {
         // Handle database constraint violations by throwing a
         // ResponseStatusException with the correct error code
+        Set<String> constraintNames = constraintsToValidate.keySet();
         for (Throwable t = ex.getCause(); t != null; t = t.getCause()) {
-            Set<String> constraintNames = constraintsToValidate.keySet();
             for (String constraintName : constraintNames) {
                 if (t.getMessage().contains(constraintName)) {
                     String errorMessage = constraintsToValidate.get(constraintName);
                     if (errorMessage.startsWith("{") && errorMessage.endsWith("}")
-                            && errorMessageProperties.size() > 0) {
+                            && !errorMessageProperties.isEmpty()) {
                         errorMessage = errorMessageProperties
                                 .getProperty(errorMessage.substring(1, errorMessage.length() - 1));
                     }
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
+                    return new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
                 }
             }
         }
