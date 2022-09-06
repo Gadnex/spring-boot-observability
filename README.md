@@ -43,6 +43,7 @@ The following software will be required to run the demo on your own machine.
 - Apache Maven 3.8.1 or later
 - Java IDE
 - Docker and Docker Compose
+- Apache JMeter optional for putting application under load.
 
 ### Environment Setup Instructions
 The following instuctions will get an environment up and running in order to run the demo.
@@ -66,9 +67,9 @@ The following URLs can be used to access the various Docker containers started a
 
 ### Running Spring Boot Applications
 The demo consists of 3 Spring Boot applications in sub folders in the root of the project. these are:
--  product-service
--  order-service
--  notification-service
+-  [product-service](http://localhost:8581/actuator)
+-  [order-service](http://localhost:8580/actuator)
+-  [notification-service](http://localhost:8582/actuator)
 
 To start these Spring Boot applications:
 1. Navigate to the folder of each application.
@@ -78,3 +79,11 @@ To start these Spring Boot applications:
 
 ### Testing the applications
 The **order-service** exposes a Swagger UI at http://localhost:8580/actuator/swagger-ui that can be used to test the application.
+
+After calling the create order service above you can use the **business-key** you provided as input or the **orderNumber** you received in the JSON response to query the Kibana logs. From the found log message you can get the **traceId**, which can in turn be used to search in Kibana to find all log messages related to the REST API call.
+
+The **traceId** can also be used view the detailed tracing information in Jaeger by searching in Jaeger for the traceId.
+
+Lastly the application metrics dashboards can be viewed in the Grafana dashboards for the 3 Spring Boot applications.
+
+In order to see more useful Metrics, Apache JMeter can be used to execute the JMeter performance test in the JMeter sub folder.
