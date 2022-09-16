@@ -15,7 +15,7 @@ In our demo application we are going to use the following Spring Boot friendly t
 
 ### Logging
 - **[spring-cloud-starter-sleuth](https://spring.io/projects/spring-cloud-sleuth)** - Used to generate and propagate traceIDs and spanIDs between Spring Boot applications. 
-- **[logstash-logback-encoder](https://github.com/logfellow/logstash-logback-encoder)** - Used to output application console logs in JSON format to improve indexing of logs in Elastic. Also used to push logs to from the Spring Boot application to Logstash. 
+- **[logstash-logback-encoder](https://github.com/logfellow/logstash-logback-encoder)** - Used to output application console logs in JSON format to improve indexing of logs in ElasticSearch. Also used to push logs to from the Spring Boot application to Logstash. 
 - **[Logstash](https://www.elastic.co/logstash/)** - To receive logs from Spring Boot applications and send the logs to ElasticSearch 
 - **[ElasticSearch](https://www.elastic.co/elasticsearch/)** - To ingest, store and index logs.
 - **[Kibana](https://www.elastic.co/kibana/)** - To visualise and query the log data in ElasticSearch.
