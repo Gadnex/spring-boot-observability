@@ -14,21 +14,22 @@ The cornerstones of Observability are:
 In our demo application we are going to use the following Spring Boot friendly technologies to implement observability.
 
 ### Logging
+- **[spring-cloud-starter-sleuth](https://spring.io/projects/spring-cloud-sleuth)** - Used to generate and propagate traceIDs and spanIDs between Spring Boot applications. 
 - **[logstash-logback-encoder](https://github.com/logfellow/logstash-logback-encoder)** - Used to output application console logs in JSON format to improve indexing of logs in Elastic. Also used to push logs to from the Spring Boot application to Logstash. 
 - **[Logstash](https://www.elastic.co/logstash/)** - To receive logs from Spring Boot applications and send the logs to ElasticSearch 
 - **[ElasticSearch](https://www.elastic.co/elasticsearch/)** - To ingest, store and index logs.
 - **[Kibana](https://www.elastic.co/kibana/)** - To visualise and query the log data in ElasticSearch.
+
+### Tracing
+- **[spring-cloud-starter-sleuth](https://spring.io/projects/spring-cloud-sleuth)** - Used to generate and propagate traceIDs and spanIDs between Spring Boot applications. 
+- **[spring-cloud-sleuth-zipkin](https://spring.io/projects/spring-cloud-sleuth)** - Used to push Sleuth tracing information to a Zipkin compatible endpoint of Jaeger.
+- **[Jaeger](https://www.jaegertracing.io/)** - Used to persist and query tracing information.
 
 ### Metrics
 - **[spring-boot-starter-actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator)** - Expose Spring Boot production ready management features via a specific URL.
 - **[micrometer-registry-prometheus](https://micrometer.io/docs/registry/prometheus)** - Library to expose Spring Boot Actuator metrics information on a Prometheus compatable URL endpoint.
 - **[Prometheus](https://prometheus.io/)** - Used to scape and persist metrics data in its time series database.
 - **[Grafana](https://grafana.com/grafana/)** - Used to build and present metrics dashboards based on metrics data from Prometheus.
-
-### Tracing
-- **[spring-cloud-starter-sleuth](https://spring.io/projects/spring-cloud-sleuth)** - Used to generate and propagate traceIDs and spanIDs between Spring Boot applications. 
-- **[spring-cloud-sleuth-zipkin](https://spring.io/projects/spring-cloud-sleuth)** - Used to push Sleuth tracing information to a Zipkin compatible endpoint of Jaeger.
-- **[Jaeger](https://www.jaegertracing.io/)** - Used to persist and query tracing information.
 
 ### Dependencies
 This demo will strictly speaking not cover the dependencies cornerstone, but the tracing cornerstone will provide some insights into dependencies.
