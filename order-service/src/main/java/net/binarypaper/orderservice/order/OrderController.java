@@ -41,7 +41,7 @@ public class OrderController {
 
     private final ProductServiceClient productServiceClient;
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, Order> kafkaTemplate;
 
     @Value("${application.kafka.topic}")
     private String topic;
