@@ -1,9 +1,13 @@
 package net.binarypaper.orderservice;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import io.micrometer.observation.ObservationRegistry;
+import io.micrometer.observation.aop.ObservedAspect;
 
 @SpringBootApplication
 public class Application {
@@ -12,9 +16,18 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
+	// Need to inject WebClient.Builder for trace propagation to work
 	@Bean
-	public WebClient getWebClient() {
-		return WebClient.create();
+	public WebClient webClient(
+			WebClient.Builder builder,
+			@Value("${application.product-service.url}") String productServiceUrl) {
+		return builder.baseUrl(productServiceUrl).build();
+	}
+
+	// Required for @Observed annotation for metrics and tracing to work
+	@Bean
+	public ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
+		return new ObservedAspect(observationRegistry);
 	}
 
 	// By default spring-kafka creates topics on the kafka server if they do not
@@ -29,11 +42,12 @@ public class Application {
 	// Remember to recreate the kafka container to remove the created topic.
 
 	// @Bean
-	// public NewTopic orderQueue(@Value("${application.kafka.topic}") String topicName) {
-	// 	return TopicBuilder.name(topicName)
-	// 			.partitions(4)
-	// 			.replicas(1)
-	// 			.build();
+	// public NewTopic orderQueue(@Value("${application.kafka.topic}") String
+	// topicName) {
+	// return TopicBuilder.name(topicName)
+	// .partitions(4)
+	// .replicas(1)
+	// .build();
 	// }
 
 }

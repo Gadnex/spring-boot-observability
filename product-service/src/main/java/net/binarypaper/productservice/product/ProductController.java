@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
-import org.springframework.cloud.sleuth.Span;
-import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -29,6 +27,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import io.micrometer.observation.annotation.Observed;
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -44,6 +45,7 @@ import net.logstash.logback.argument.StructuredArguments;
 @CrossOrigin(origins = { "${application.cors.origins}" })
 @RequestMapping(path = "products", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Product API", description = "API to manage products")
+@Observed
 @Slf4j
 public class ProductController {
 

@@ -3,8 +3,6 @@ package net.binarypaper.orderservice.order;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.sleuth.annotation.NewSpan;
-import org.springframework.cloud.sleuth.annotation.SpanTag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -19,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import io.micrometer.observation.annotation.Observed;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.binarypaper.orderservice.product.Product;
 import net.binarypaper.orderservice.product.ProductServiceClient;
@@ -35,7 +33,7 @@ import net.logstash.logback.argument.StructuredArguments;
 @CrossOrigin(origins = { "${application.cors.origins}" })
 @RequestMapping(path = "orders", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Order API", description = "API to manage orders")
-@RequiredArgsConstructor
+@Observed
 @Slf4j
 public class OrderController {
 
@@ -46,6 +44,13 @@ public class OrderController {
     @Value("${application.kafka.topic}")
     private String topic;
 
+    public OrderController(ProductServiceClient productServiceClient, KafkaTemplate<String,Order> kafkaTemplate) {
+        this.productServiceClient = productServiceClient;
+        this.kafkaTemplate = kafkaTemplate;
+        // Required to enable observation for Kafka
+        kafkaTemplate.setObservationEnabled(true);
+    }
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @JsonView(Order.Views.View.class)
@@ -54,10 +59,9 @@ public class OrderController {
             @ApiResponse(responseCode = "201", description = "The order was created"),
             @ApiResponse(responseCode = "400", description = "Invalid order details", content = @Content)
     })
-    @NewSpan
     public Order createOrder(
             @RequestBody @Validated(Order.Views.Add.class) @JsonView(Order.Views.Add.class) Order order,
-            @RequestParam(name = "business-key") @SpanTag(key = "business-key") @Parameter(description = "A business key identifying the transaction", example = "771bc371-3b57-4d9c-9964-123cef7b9f47") String businessKey) {
+            @RequestParam(name = "business-key") @Parameter(description = "A business key identifying the transaction", example = "771bc371-3b57-4d9c-9964-123cef7b9f47") String businessKey) {
         log.info("createOrder called",
                 StructuredArguments.kv("order", order),
                 StructuredArguments.kv("business-key", businessKey));
