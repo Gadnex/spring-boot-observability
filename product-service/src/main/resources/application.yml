@@ -1,6 +1,6 @@
 spring:
     application:
-        name: product-service
+        name: @project.artifactId@
     datasource:
         # Needs to be set explicitly to use database name testdb otherwise random guid is used
         # DB_CLOSE_DELAY prevents database from being destroyed after disconnect of schema creation
@@ -30,12 +30,19 @@ management:
             show-details: always
             probes:
                 enabled: true
+    info:
+        env:
+            enabled: true
     tracing:
         sampling:
             probability: 1.0
     zipkin:
         tracing:
             endpoint: http://localhost:9411/api/v2/spans
+
+info:
+    application-name: @project.artifactId@
+    application-version: @project.version@
 
 springdoc:
     use-management-port: true

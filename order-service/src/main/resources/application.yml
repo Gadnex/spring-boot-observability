@@ -1,6 +1,6 @@
 spring:
     application:
-        name: order-service
+        name: @project.artifactId@
     jackson:
         # Global setting to not return null objects in JSON responses
         default-property-inclusion: NON_NULL
@@ -26,12 +26,19 @@ management:
             show-details: always
             probes:
                 enabled: true
+    info:
+        env:
+            enabled: true
     tracing:
         sampling:
             probability: 1.0
     zipkin:
         tracing:
             endpoint: http://localhost:9411/api/v2/spans
+
+info:
+    application-name: @project.artifactId@
+    application-version: @project.version@
 
 springdoc:
     use-management-port: true
